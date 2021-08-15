@@ -5,7 +5,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_USER, QUERY_ME } from "../utils/queries";
 
 import Auth from "../utils/auth";
-import { UPDATE_PROFILE } from "../utils/mutations";
+import { UPDATE_PROFILE, DELETE_USER } from "../utils/mutations";
 
 
 const Profile = () => {
@@ -41,7 +41,7 @@ const Profile = () => {
 
   const ProfileForm = (props) => {
     const [formState, setFormState] = useState({ email: "", password: "" });
-    const [login, { error, data }] = useMutation(UPDATE_PROFILE);
+    const [login, { error, data }] = useMutation(UPDATE_PROFILE, DELETE_USER);
 
     // update state based on form input changes
     const handleChange = (event) => {
