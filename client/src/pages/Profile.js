@@ -58,6 +58,7 @@ const Profile = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     console.log(formState);
+    console.log(data)
     try {
       const { data } = await updateProfile({
         variables: { ...formState },
@@ -83,13 +84,12 @@ const Profile = () => {
       const { data } = await deleteUser({
         variables: { ...formState },
       });
-      console.log(`this worked`)
+      console.log(`this worked`);
       Auth.logout();
       window.location.assign("/");
     } catch (e) {
       console.error(e);
     }
-    
   };
 
   return (
@@ -127,7 +127,7 @@ const Profile = () => {
                   onChange={handleChange}
                 />
                 <h4>Update Email</h4>
-                <form onSubmit={handleFormSubmit}>
+                <form >
                   <input
                     className="form-input"
                     placeholder="Your email"
@@ -145,15 +145,15 @@ const Profile = () => {
                     value={formState.password}
                     onChange={handleChange}
                   />
-                  <button
-                    className="button is-success btn-block btn-primary"
+                  <button onClick={handleFormSubmit}
+                    className="button is-warning btn-block btn-primary"
                     style={{ cursor: "pointer" }}
                     type="submit"
                   >
-                    Submit
+                    Update
                   </button>
                   <button onClick={handleDelete} className="button is-danger">
-                    Delete User!
+                    DELETE USER!
                   </button>
                 </form>
 

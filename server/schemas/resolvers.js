@@ -12,7 +12,7 @@ const resolvers = {
     },
 
     me: async (parent, args, context) => {
-      console.log("context",context.user)
+      console.log("context", context.user);
       if (context.user) {
         return User.findOne({ _id: context.user._id });
       }
@@ -44,12 +44,15 @@ const resolvers = {
       return { token, user };
     },
     updateUser: async (parent, { username, email, password }) => {
-      const user = await User.findOneAndUpdate({ username, email, password });
+      const user = await User.findOneAndUpdate(
+        { username, email, password },
+        { $addToSet: username, email, password }
+      );
       const token = signToken(user);
       return { token, user };
     },
     deleteUser: async (parent, args, context) => {
-      const user = await User.deleteOne({ _id:context.user._id });
+      const user = await User.deleteOne({ _id: context.user._id });
       const token = signToken(user);
       return { token, user };
     },

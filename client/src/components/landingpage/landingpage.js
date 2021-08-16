@@ -14,6 +14,7 @@ export default function landingpage() {
           instructors the power to make classes engaging and fun for all
           involved by creating a MotivTeam.
         </li>
+        <br />
         <li>
           MotivScore works by allowing class instructors to schedule classes and
           generate unique check in codes.
@@ -22,20 +23,25 @@ export default function landingpage() {
           When checking in with the unique class code the class attendees are
           rewarded with MotivPoints.
         </li>
+        <br />
         <li>
           These MotivPoints can be used to claim rewards in the MotivStore.
         </li>
+        <br />
         <li>
           {" "}
           The contents of the MotivStore are determined by the class instructor.
-          <ul>
+          <div>
+            <br />
+
+            <ul>
               <li>Control the class music?</li>
               <li>Give yourself an extra 1 min break between sets?</li>
-              <li>recieve gym merch or equipment?</li>
-              <li>maybe even claim a free class session?</li>
-          </ul>
+              <li>Recieve gym merch or equipment?</li>
+              <li>Maybe even claim a free class session?</li>
+            </ul>
+          </div>
         </li>
-
       </ul>
     </div>
   );
