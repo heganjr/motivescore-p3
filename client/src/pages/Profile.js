@@ -9,10 +9,14 @@ import { UPDATE_PROFILE, DELETE_USER } from "../utils/mutations";
 
 const Profile = () => {
   const { username: userParam } = useParams();
-
+  
   const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
     variables: { username: userParam },
   });
+  const [formState, setFormState] = useState({ username: "", email: "", password: "" });
+  const [updateProfile, { error }] = useMutation(UPDATE_PROFILE);
+  const [deleteUser, { error: deleteError }] = useMutation(DELETE_USER);
+  // const [login, { error, data: updateUser }] = useMutation(UPDATE_PROFILE, DELETE_USER);
   console.log(data);
 
   const user = data?.me || data?.username || {};
@@ -27,18 +31,15 @@ const Profile = () => {
   }
 
   // Removed so I can modify the profile form - Not getting data.username :(
-  // if (!user?.username) {
-  //   return (
-  //     <div>
-  //       <h4>You need to be logged in to see this</h4>
-  //       <h4> Use the navigation links above to sign up or log in!</h4>
-  //     </div>
-  //   );
-  // }
+  if (!user?.username) {
+    return (
+      <div>
+        <h4>You need to be logged in to see this</h4>
+        <h4> Use the navigation links above to sign up or log in!</h4>
+      </div>
+    );
+  }
 
-  const ProfileForm = (props) => {
-    const [formState, setFormState] = useState({ email: "", password: "" });
-    const [login, { error, data }] = useMutation(UPDATE_PROFILE, DELETE_USER);
 
     // update state based on form input changes
     const handleChange = (event) => {
@@ -55,7 +56,7 @@ const Profile = () => {
       event.preventDefault();
       console.log(formState);
       try {
-        const { data } = await login({
+        const { data } = await updateProfile({
           variables: { ...formState },
         });
 
@@ -66,9 +67,23 @@ const Profile = () => {
 
       // clear form values
       setFormState({
+        username: "",
         email: "",
         password: "",
       });
+    };
+
+      const handleDelete = async (event) => {
+      event.preventDefault();
+      console.log(formState);
+      try {
+        const { data } = await deleteUser({
+          variables: { ...formState },
+        });
+
+      } catch (e) {
+        console.error(e);
+      }
     };
 
     return (
@@ -86,12 +101,21 @@ const Profile = () => {
                   Profile Details
                 </h4>
 
-                <h5>Username: heganjr {""}</h5>
-                <h5>Email: jacobhegan@hotmail.com {""}</h5>
+                <h5>Username: {user.username} {""}</h5>
+                <h5>Email: {user.email} {""}</h5>
                 <h1>MotivScore: 16,800 {""}</h1>
                 <h1>Current MotivPoints: 🏃💰2,400</h1>
 
                 <div className="card-body">
+                  <h4>Update Username</h4>
+                  <input
+                    className="form-input"
+                    placeholder="Your username"
+                    name="username"
+                    type="text"
+                    value={formState.username}
+                    onChange={handleChange}
+                  />
                   <h4>Update Email</h4>
                   <form onSubmit={handleFormSubmit}>
                     <input
@@ -118,6 +142,9 @@ const Profile = () => {
                     >
                       Submit
                     </button>
+                  <button onClick={handleDelete} className="button is-danger">
+                    Delete User!
+                  </button>
                   </form>
 
                   {error && (
@@ -125,6 +152,7 @@ const Profile = () => {
                       {error.message}
                     </div>
                   )}
+
                 </div>
               </div>
             </div>
@@ -133,6 +161,6 @@ const Profile = () => {
       </div>
     );
   };
-};
+
 
 export default Profile;

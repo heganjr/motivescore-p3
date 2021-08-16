@@ -38,7 +38,7 @@ export const UPDATE_PROFILE = gql`
 
 export const DELETE_USER = gql`
   mutation deleteUser($username: String!, $email: String!, $password: String!) {
-    updateUser(username: $username, email: $email, password: $password) {
+    deleteUser(username: $username, email: $email, password: $password) {
       token
       user {
         _id
